@@ -1,0 +1,176 @@
+Bài 1
+1: Chuyển đổi địa chỉ IP sang dạng nhị phân
+Địa chỉ IP: 192.168.2.75
+
+Subnet mask: 255.255.255.224
+
+192 = 11000000
+168 = 10101000
+2 = 00000010
+75 = 01001011
+Subnet mask /27 (255.255.255.224):
+
+255 = 11111111
+255 = 11111111
+255 = 11111111
+224 = 11100000
+Bước 2: Tính địa chỉ mạng (Network Address)
+Để tìm địa chỉ mạng, ta thực hiện phép AND giữa địa chỉ IP và subnet mask:
+
+text
+IP:         11000000.10101000.00000010.01001011  
+Subnet:     11111111.11111111.11111111.11100000  
+Network:    11000000.10101000.00000010.01000000  
+Chuyển về dạng thập phân:
+Địa chỉ mạng: 192.168.2.64
+
+2: Tính địa chỉ broadcast (Broadcast Address)
+Địa chỉ broadcast là địa chỉ mà tất cả các bit host đều là 1. Với /27, ta có 5 bit host (32 - 27 = 5).
+
+Địa chỉ mạng: 192.168.2.64 = 11000000.10101000.00000010.01000000
+Đặt tất cả 5 bit host thành 1:
+11000000.10101000.00000010.01011111
+Chuyển về dạng thập phân:
+192.168.2.95
+Địa chỉ broadcast: 192.168.2.95
+3 Tính dải địa chỉ khả dụng (Usable IP Range)
+Dải địa chỉ khả dụng là các địa chỉ nằm giữa địa chỉ mạng và địa chỉ broadcast, trừ đi chính hai địa chỉ này (vì địa chỉ mạng và broadcast không dùng cho host):
+Dải địa chỉ khả dụng: 192.168.2.64 - 192.168.2.94
+4: Tính số lượng host khả dụng
+Số lượng host khả dụng được tính bằng công thức:
+Số host = 2^(số bit host) - 2 (trừ 2 cho địa chỉ mạng và broadcast).
+Số bit host = 32 - 27 = 5
+Số host = 2^5 - 2 = 32 - 2 = 30
+Số lượng host khả dụng: 30
+
+Kết quả cuối cùng:
+Địa chỉ mạng (Network Address): 192.168.2.64
+Địa chỉ broadcast (Broadcast Address): 192.168.2.95
+Dải địa chỉ khả dụng (Usable IP Range): 192.168.2.65 - 192.168.2.94
+Số lượng host khả dụng: 30
+
+
+Bài 2
+1: Thông tin ban đầu
+Địa chỉ mạng: 10.0.0.0/23
+Subnet mask /23 = 255.255.254.0
+Số bit mạng = 23, số bit host = 32 - 23 = 9
+Tổng số host khả dụng trong /23 = 2^9-2 = 510
+
+Dải địa chỉ: 10.0.0.0 đến 10.0.1.255 (broadcast: 10.0.1.255)
+Ta cần chia mạng này thành các subnet sao cho đáp ứng yêu cầu số lượng host tối thiểu.
+2^n-2
+Subnet A: Ít nhất 200 host
+2^8 - 2 = 254(đủ cho 200 host)
+Số bit host = 8
+Số bit mạng = 32 - 8 = 24
+Subnet Mask: /24 (255.255.255.0)
+Subnet B: Ít nhất 100 host
+2^7 - 2 = 126(đủ cho 100 host)
+Số bit host = 7
+Số bit mạng = 32 - 7 = 25
+Subnet Mask: /25 (255.255.255.128)
+Subnet C: Ít nhất 50 host
+2^6 -2 = 62 (đủ cho 50 host)
+Số bit host = 6
+Số bit mạng = 32 - 6 = 26
+Subnet Mask: /26 (255.255.255.192)
+2: Chia subnet và xác định địa chỉ mạng
+Mạng ban đầu là 10.0.0.0/23, có dải địa chỉ từ 10.0.0.0 đến 10.0.1.255. Ta sẽ chia lần lượt từng subnet từ địa chỉ bắt đầu.
+
+Subnet A: /24 (256 địa chỉ)
+Địa chỉ mạng: 10.0.0.0
+Dải địa chỉ: 10.0.0.0 - 10.0.0.255
+Broadcast: 10.0.0.255
+Địa chỉ mạng: 10.0.0.0
+Số host khả dụng: 256−2=254
+Địa chỉ tiếp theo khả dụng: 10.0.1.0.
+
+Subnet B: /25 (128 địa chỉ)
+Địa chỉ mạng: 10.0.1.0
+Dải địa chỉ: 10.0.1.0 - 10.0.1.127
+Broadcast: 10.0.1.127
+Địa chỉ mạng: 10.0.1.0
+Số host khả dụng: 128−2=126
+Địa chỉ tiếp theo khả dụng: 10.0.1.128.
+
+Subnet C: /26 (64 địa chỉ)
+Địa chỉ mạng: 10.0.1.128
+Dải địa chỉ: 10.0.1.128 - 10.0.1.191
+Broadcast: 10.0.1.191
+Địa chỉ mạng: 10.0.1.128
+Số host khả dụng: 64−2=62
+(Phần còn lại: 10.0.1.192 - 10.0.1.255 có thể dùng cho subnet khác nếu cần.)
+
+Kết quả cuối cùng
+Subnet Mask cho từng subnet:
+Subnet A: /24 (255.255.255.0)
+Subnet B: /25 (255.255.255.128)
+Subnet C: /26 (255.255.255.192)
+Địa chỉ mạng của từng subnet:
+Subnet A: 10.0.0.0
+Subnet B: 10.0.1.0
+Subnet C: 10.0.1.128
+Số lượng host khả dụng trên mỗi subnet:
+Subnet A: 254
+Subnet B: 126
+Subnet C: 62
+Bài 3
+1: Chuyển đổi địa chỉ IP sang dạng nhị phân
+Địa chỉ IP: 172.16.10.200
+
+172 = 10101100
+16 = 00010000
+10 = 00001010
+200 = 11001000
+Subnet mask: 255.255.248.0
+
+255 = 11111111
+255 = 11111111
+248 = 11111000
+0 = 00000000
+ Tính địa chỉ mạng (Network Address)
+Thực hiện phép AND giữa địa chỉ IP và subnet mask:
+
+IP:         10101100.00010000.00001010.11001000  
+Subnet:     11111111.11111111.11111000.00000000  
+Network:    10101100.00010000.00001000.00000000  
+Chuyển về dạng thập phân:
+
+172.16.8.0
+
+Địa chỉ mạng: 172.16.8.0
+
+2: Tính địa chỉ broadcast (Broadcast Address)
+Địa chỉ broadcast là địa chỉ mà tất cả các bit host đều là 1. Với /21, số bit host = 32 - 21 = 11 bit.
+Địa chỉ mạng: 172.16.8.0 = 10101100.00010000.00001000.00000000
+Đặt tất cả 11 bit host thành 1:
+10101100.00010000.00001111.11111111
+Chuyển về dạng thập phân:
+10101100 = 172
+00010000 = 16
+00001111 = 15
+11111111 = 255
+Địa chỉ broadcast: 172.16.15.255
+
+3: Xác định Subnet Mask ở dạng thập phân
+Subnet mask /21 là:
+8 bit (octet đầu) = 255
+8 bit (octet thứ hai) = 255
+5 bit (octet thứ ba) = 11111000 = 248 (128 + 64 + 32 + 16 + 8)
+0 bit (octet thứ tư) = 0
+Subnet Mask: 255.255.248.0
+
+4: Tính số lượng host có thể sử dụng
+Số lượng host khả dụng được tính bằng công thức:
+
+Số host = 2^(số bit host) - 2 (trừ 2 cho địa chỉ mạng và broadcast).
+
+Số bit host = 32 - 21 = 11
+Số host = 2^11 - 2 = 2048 - 2 = 2046
+Số lượng host khả dụng: 2046
+Kết quả cuối cùng:
+Địa chỉ mạng (Network Address): 172.16.8.0
+Địa chỉ broadcast (Broadcast Address): 172.16.15.255
+Subnet Mask ở dạng thập phân: 255.255.248.0
+Số lượng host có thể sử dụng: 2046
